@@ -12,6 +12,7 @@ if SRC_PATH.exists() and str(SRC_PATH) not in sys.path:
     sys.path.insert(0, str(SRC_PATH))
 
 from dotenv import load_dotenv, find_dotenv
+import gosynapse
 
 from gosynapse.client import SynapseClient
 
@@ -19,6 +20,7 @@ from gosynapse.client import SynapseClient
 def main() -> None:
     logging.basicConfig(level=logging.DEBUG)
     logging.getLogger("urllib3").setLevel(logging.DEBUG)
+    logging.debug("Using gosynapse from %s", gosynapse.__file__)
     load_dotenv(find_dotenv(usecwd=True))
     host = os.environ.get("SYNAPSE_HOST", "").strip()
     port = os.environ.get("SYNAPSE_PORT", "").strip()
@@ -50,6 +52,7 @@ def main() -> None:
         with output_file.open("a", encoding="utf-8") as f:
             json.dump(result, f)
             f.write("\n")
+        logging.debug("Wrote results to %s", output_file)
 
 
 if __name__ == "__main__":
